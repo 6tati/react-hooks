@@ -1,7 +1,9 @@
+import { useState } from 'react';
 import NavBar from './components/NavBar/NavBar.jsx'
 import Footer from './components/Footer/Footer.jsx'
 import ProductList from './components/ProductList/ProductList.jsx'
 import CartModal from './components/CartModal/CartModal.jsx'
+
 
 export default function App() {
   // =============================================================
@@ -11,9 +13,9 @@ export default function App() {
   //   const [isCartOpen, setIsCartOpen] = useState(false)
   //   const [currentPage, setCurrentPage] = useState(1)
   // =============================================================
-  const searchQuery = ''
-  const isCartOpen = false
-  const currentPage = 1
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isCartOpen, setIsCartOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
 
   // =============================================================
   // TODO Étape 4 — useDebounce
