@@ -3,6 +3,7 @@ import Pagination from '../Pagination/Pagination.jsx'
 import { useProducts, PAGE_SIZE } from '../../hooks/useProducts.js'
 import { useCartContext } from '../../context/CartContext.jsx'
 
+
 /**
  * ProductList — grille de produits avec pagination.
  *
@@ -11,23 +12,23 @@ import { useCartContext } from '../../context/CartContext.jsx'
  *   currentPage  : number   — page courante (1-based)
  *   onPageChange : function — appelée avec le nouveau numéro de page
  */
+
 export default function ProductList({ searchQuery, currentPage, onPageChange }) {
   // =============================================================
   // TODO Étape 3 — useEffect (via useProducts)
   // Remplacer les 4 lignes ci-dessous par :
   //   const { products, total, loading, error } = useProducts(searchQuery, currentPage)
   // =============================================================
-  const products = []
-  const total = 0
-  const loading = false
-  const error = null
+  const { products, total, loading, error } = useProducts(searchQuery, currentPage)
+
+  
 
   // =============================================================
   // TODO Étape 6 — useContext
   // Remplacer la ligne ci-dessous par :
   //   const { addToCart } = useCartContext()
   // =============================================================
-  const addToCart = () => {}
+  const { addToCart } = useCartContext()
 
   const totalPages = Math.ceil(total / PAGE_SIZE)
 
@@ -65,9 +66,18 @@ export default function ProductList({ searchQuery, currentPage, onPageChange }) 
                   ))}
                 </div>
               ============================================================= */}
-          <p className="text-center text-muted">
-            TODO Étape 2 : afficher les {products.length} produits ici.
-          </p>
+          
+            <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
+              {products.map((product) => (
+                <div key={product.id} className="col">
+                  <ProductCard
+                    product={product}
+                    onAddToCart={addToCart}
+                  />
+                </div>
+              ))}
+            </div>
+          
 
           {/* =============================================================
               TODO Étape 3
@@ -80,8 +90,16 @@ export default function ProductList({ searchQuery, currentPage, onPageChange }) 
                   />
                 )}
               ============================================================= */}
+              {totalPages > 1 && (
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    onPageChange={onPageChange}
+                  />
+                )}
         </>
       )}
     </div>
   )
+
 }

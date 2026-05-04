@@ -37,6 +37,35 @@ export const PAGE_SIZE = 12
  */
 export function useProducts(searchQuery, page) {
   // TODO
+  const [products, setProducts] = useState([])
+  const [total, setTotal] = useState(0)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  return { products: [], total: 0, loading: false, error: null }
+  useEffect(() => {
+    
+    setError(null)
+
+    const skip = (page - 1) * PAGE_SIZE
+    const url = searchQuery
+      ? `${BASE_URL}/search?q=${searchQuery}&limit=${PAGE_SIZE}&skip=${skip}`
+      : `${BASE_URL}?limit=${PAGE_SIZE}&skip=${skip}`
+
+    fetch(url)
+      .then(res => res.json())
+      .then(data => {
+        setProducts(data.products)
+        setTotal(data.total)
+      })
+      .catch(() => {
+        setError('Erreur lors du chargement')
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [searchQuery, page])
+  
+
+
+  return { products, total, loading, error }
 }
