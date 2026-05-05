@@ -39,11 +39,12 @@ export function useProducts(searchQuery, page) {
   // TODO
   const [products, setProducts] = useState([])
   const [total, setTotal] = useState(0)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    
+  const fetchProducts = async () => {
+    setLoading(true)
     setError(null)
 
     const skip = (page - 1) * PAGE_SIZE
@@ -51,19 +52,21 @@ export function useProducts(searchQuery, page) {
       ? `${BASE_URL}/search?q=${searchQuery}&limit=${PAGE_SIZE}&skip=${skip}`
       : `${BASE_URL}?limit=${PAGE_SIZE}&skip=${skip}`
 
-    fetch(url)
-      .then(res => res.json())
-      .then(data => {
-        setProducts(data.products)
-        setTotal(data.total)
-      })
-      .catch(() => {
-        setError('Erreur lors du chargement')
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [searchQuery, page])
+    try {
+      const res = await fetch(url)
+      const data = await res.json()
+
+      setProducts(data.products)
+      setTotal(data.total)
+    } catch {
+      setError('Erreur lors du chargement')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  fetchProducts()
+}, [searchQuery, page])
   
 
 

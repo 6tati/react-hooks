@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import NavBar from './components/NavBar/NavBar.jsx'
 import Footer from './components/Footer/Footer.jsx'
+import { useDebounce } from './hooks/useDebounce.js'
 import ProductList from './components/ProductList/ProductList.jsx'
 import CartModal from './components/CartModal/CartModal.jsx'
 
@@ -16,6 +17,7 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const debouncedQuery = useDebounce(searchQuery, 400)
 
   // =============================================================
   // TODO Étape 4 — useDebounce
@@ -29,18 +31,22 @@ export default function App() {
         searchQuery={searchQuery}
         onSearchChange={(_value) => {
           // TODO Étape 1 : appeler setSearchQuery(_value) et setCurrentPage(1)
+          setSearchQuery(_value);
+          setCurrentPage(1);
         }}
         onCartClick={() => {
           // TODO Étape 1 : appeler setIsCartOpen(true)
+          setIsCartOpen(true);
         }}
       />
 
       <main className="flex-grow-1 container py-4">
         <ProductList
-          searchQuery={searchQuery /* TODO Étape 4 : remplacer par debouncedQuery */}
+          searchQuery={debouncedQuery  /* TODO Étape 4 : remplacer par debouncedQuery */}
           currentPage={currentPage}
           onPageChange={(_page) => {
             // TODO Étape 1 : appeler setCurrentPage(_page)
+            setCurrentPage(_page);
           }}
         />
       </main>
@@ -51,6 +57,7 @@ export default function App() {
         isOpen={isCartOpen}
         onClose={() => {
           // TODO Étape 1 : appeler setIsCartOpen(false)
+          setIsCartOpen(false);
         }}
       />
     </div>
