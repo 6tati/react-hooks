@@ -43,7 +43,10 @@ const STORAGE_KEY = 'react-shop-cart'
  * 8. Retourner tous les éléments ci-dessus
  * =============================================================
  */
+
 export function useCart() {
+  
+  
   // TODO
   const [cart, setCart] = useState(
     () => JSON.parse(localStorage.getItem(STORAGE_KEY)) ?? []
@@ -64,7 +67,6 @@ export function useCart() {
       return [...prev, { ...product, qty: 1 }]
     })
   }, [])
-
   const removeFromCart = useCallback((id) => {
     setCart(prev => prev.filter(item => item.id !== id))
   }, [])

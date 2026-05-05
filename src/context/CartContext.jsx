@@ -4,6 +4,7 @@ import { useCart } from '../hooks/useCart.js'
 // =============================================================
 // CartContext — accessible dans toute l'arborescence
 // =============================================================
+// eslint-disable-next-line react-refresh/only-export-components
 export const CartContext = createContext(null)
 
 // CartProvider est rendu dans main.jsx autour de <App>
@@ -15,14 +16,7 @@ export function CartProvider({ children }) {
   // puis passer cart comme valeur du Provider :
   //   <CartContext.Provider value={cart}>
   // =============================================================
-  const cart = {
-    cart: [],
-    addToCart: () => {},
-    removeFromCart: () => {},
-    clearCart: () => {},
-    cartCount: 0,
-    cartTotal: 0,
-  }
+  const cart = useCart()
 
   return (
     <CartContext.Provider value={cart}>
@@ -32,6 +26,7 @@ export function CartProvider({ children }) {
 }
 
 // Hook de commodité — fourni par le professeur, ne pas modifier
+// eslint-disable-next-line react-refresh/only-export-components
 export function useCartContext() {
   const context = useContext(CartContext)
   if (!context) {
